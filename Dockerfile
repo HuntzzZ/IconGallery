@@ -4,6 +4,7 @@ FROM php:7.4-apache
 # 安装json扩展（如果未预装）
 RUN docker-php-ext-install json
 
+
 # 将iconweb目录下的应用代码复制到容器内的/var/www/html
 COPY iconweb /var/www/html
 
