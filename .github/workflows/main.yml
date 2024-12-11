@@ -32,18 +32,20 @@ jobs:
 
       - name: Build the Docker image  # 第五步：构建 Docker 镜像
         run: |
-          echo "Building image with tag oops-icons:${{ github.sha }}"
-          docker build --tag oops-icons:${{ github.sha }} .
+          local_sha=${{ github.sha }}
+          echo "Building image with tag oops-icons:${local_sha}"
+          docker build --tag oops-icons:${local_sha} .
 
       - name: List Docker images  # 列出当前可用的 Docker 镜像，用于调试
         run: docker images
 
-
-      - name: Build the Docker image  # 第五步：构建 Docker 镜像
+      - name: Tag the Docker image  # 第六步：给 Docker 镜像打标签
         run: |
           local_sha=${{ github.sha }}
-          echo "Building image with tag oops-icons:${local_sha}"
-          docker build --tag oops-icons:${local_sha} .
+          echo "Tagging image oops-icons:${local_sha} as ${DOCKER_USERNAME}/oops-icons:${local_sha}"
+          docker tag oops-icons:${local_sha} ${DOCKER_USERNAME}/oops-icons:${local_sha}
+          echo "Tagging image oops-icons:${local_sha} as ${DOCKER_USERNAME}/oops-icons:latest"
+          docker tag oops-icons:${local_sha} ${DOCKER_USERNAME}/oops-icons:latest
 
       - name: Push the Docker image  # 第七步：推送 Docker 镜像到 Docker Hub
         run: |
