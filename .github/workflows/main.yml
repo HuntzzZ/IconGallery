@@ -30,7 +30,7 @@ jobs:
       uses: docker/setup-buildx-action@v2  # 使用官方提供的 setup-buildx action 设置 Buildx
 
     - name: Print Git SHA  # 打印 Git 提交 SHA，用于调试
-      run: echo "Git SHA: ${{ github.sha }}"
+      run: echo "Git SHA:${{ github.sha }}"
 
     - name: Build the Docker image  # 第五步：构建 Docker 镜像
       run: |
