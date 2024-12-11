@@ -1,0 +1,294 @@
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #f9f9f9;
+    position: relative; /* Ensure body has a stacking context */
+}
+
+header {
+    background-color: #ffffff;
+    text-align: center;
+    padding: 20px 0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 1000; /* Ensure header is above other content */
+    width: 100%;
+}
+
+.container {
+    display: flex;
+    flex: 1;
+    padding-top: 80px; /* Adjust padding to accommodate header */
+    padding-bottom: 60px; /* Add bottom padding for footer and floating buttons */
+    position: relative; /* Ensure container has a stacking context */
+}
+
+#sidebar {
+    width: 175px;
+    background-color: #ffffff;
+    color: #333;
+    padding: 15px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow-y: auto;
+    margin-right: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    height: calc(100vh - 60px); /* Adjust height to fit within viewport minus header */
+    position: fixed; /* Fix sidebar to the left side */
+    top: 180px; /* Offset from the top for header */
+    bottom: 260px; /* Offset from the bottom for footer */
+    left: 15px;
+}
+
+.search-section,
+.navigation-section,
+.update-notes,
+.thanks-notes {
+    margin-bottom: 20px;
+    background-color: #f0f0f0;
+    border-radius: 10px;
+    padding: 15px;
+}
+
+#search-input {
+    width: calc(100% - 20px);
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+#navigation {
+    list-style-type: none;
+    padding: 0;
+}
+
+#navigation li {
+    margin-bottom: 10px;
+}
+
+#navigation a {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+    transition: color 0.3s;
+}
+
+#navigation a:hover {
+    color: #ff6347;
+}
+
+.update-notes h2,
+.thanks-notes h2 {
+    margin-top: 0;
+    font-size: 18px;
+    color: #333;
+    font-weight: bold; /* Make update notes title bold */
+}
+
+.update-notes ul,
+.thanks-notes p {
+    margin: 0;
+    padding: 0;
+}
+
+.update-notes li {
+    margin-bottom: 10px;
+    font-size: 14px;
+    color: #555;
+}
+
+
+main {
+    flex: 1;
+    padding: 20px 20px 20px 250px; /* Adjust padding to accommodate fixed sidebar */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.category-title {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #333;
+}
+
+.icon-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); /* Increase or decrease this value to adjust minimum width of each icon item */
+    gap: 20px; /* Increase or decrease this value to adjust spacing between icons */
+    justify-items: center;
+    width: 100%; /* Ensure the grid takes full width */
+}
+
+.icon-item {
+    text-align: center;
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+    position: relative;
+    width: 120px; /* Set fixed width for each icon item */
+}
+
+.icon-item img {
+    width: 100px; /* Set uniform width for all icons */
+    height: 100px; /* Set uniform height for all icons */
+    object-fit: contain; /* Ensure images are contained within their container */
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.icon-description {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #555;
+    white-space: nowrap; /* Prevent text from wrapping */
+    overflow: hidden; /* Hide overflowing text */
+    text-overflow: ellipsis; /* Show ellipsis for overflowed text */
+}
+
+.copy-button {
+    position: absolute;
+    top: 15px;
+    right: 35px;
+    background-color: #ffcccb;
+    border: none;
+    color: #333;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 12px;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.icon-item:hover .copy-button {
+    opacity: 1;
+}
+
+footer {
+    background-color: #ffffff;
+    text-align: center;
+    padding: 10px 0;
+    margin-top: auto;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Dark theme styles */
+body.dark-theme {
+    background-color: #121212;
+    color: #ffffff;
+}
+
+body.dark-theme header {
+    background-color: #1e1e1e;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+body.dark-theme #sidebar {
+    background-color: #1e1e1e;
+    color: #ffffff;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
+}
+
+body.dark-theme main {
+    background-color: #1e1e1e;
+    color: #ffffff;
+}
+
+body.dark-theme footer {
+    background-color: #1e1e1e;
+    color: #ffffff;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.5);
+}
+
+body.dark-theme .icon-item {
+    background-color: #2c2c2c;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+body.dark-theme .search-section,
+body.dark-theme .navigation-section,
+body.dark-theme .update-notes,
+body.dark-theme .thanks-notes {
+    background-color: #333;
+    color: #ffffff;
+}
+
+body.dark-theme #search-input {
+    background-color: #444;
+    color: #ffffff;
+    border-color: #555;
+}
+
+body.dark-theme #navigation a {
+    color: #ffffff;
+    font-weight: bold; /* Make navigation links bold in dark mode */
+}
+
+body.dark-theme .update-notes h2,
+body.dark-theme .thanks-notes h2 {
+    color: #ffffff;
+    font-weight: bold; /* Make update notes title bold in dark mode */
+}
+
+/* Floating buttons styling */
+.floating-buttons {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+}
+
+#theme-toggle-button,
+#scroll-to-top-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #ff6347;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    z-index: 1001; /* Ensure the button is above other content */
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Center text inside the button */
+    width: 120px; /* Set uniform width for both buttons */
+    font-size: 14px; /* Set uniform font size for both buttons */
+}
+
+#theme-toggle-button:hover,
+#scroll-to-top-button:hover {
+    background-color: #e05244;
+}
+
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+        padding: 20px; /* Adjust padding for smaller screens */
+    }
+    #sidebar {
+        width: 100%;
+        margin-bottom: 10px;
+        height: auto;
+        position: static; /* Remove fixed positioning on small screens */
+        margin-right: 0;
+    }
+    main {
+        padding: 20px; /* Reset padding for smaller screens */
+    }
+}
+
+
+
