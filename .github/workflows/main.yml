@@ -1,7 +1,5 @@
-# 定义工作流的名称
 name: Docker Image CI
 
-# 触发条件：当向 main 分支推送代码或创建拉取请求时触发此工作流
 on:
   push:
     branches:
@@ -10,14 +8,11 @@ on:
     branches:
       - main  # 向主分支发起的拉取请求也会触发构建
 
-# 定义 jobs（任务），jobs 是并行执行的独立单元
 jobs:
   build:
 
-    # 指定运行环境为 Ubuntu 22.04 LTS
-    runs-on: ubuntu-22.04  
+    runs-on: ubuntu-22.04  # 指定使用 Ubuntu 22.04
 
-    # 步骤列表，按顺序执行
     steps:
     - name: Checkout repository  # 第一步：检出仓库代码
       uses: actions/checkout@v3  # 使用官方提供的 checkout action 来获取代码库内容
@@ -34,17 +29,29 @@ jobs:
     - name: Set up Docker Buildx  # 第四步：设置 Docker Buildx（用于多平台构建，可选）
       uses: docker/setup-buildx-action@v2  # 使用官方提供的 setup-buildx action 设置 Buildx
 
+    - name: Print Git SHA  # 打印 Git 提交 SHA，用于调试
+      run: echo "Git SHA: ${{ github.sha }}"
+
     - name: Build the Docker image  # 第五步：构建 Docker 镜像
       run: |
-        docker build --tag oops-icons:${{ github.sha }} .  # 根据 Dockerfile 构建镜像，并打上唯一的 Git 提交 SHA 标签
+        echo "Building image with tag oops-icons:${{ github.sha }}"
+        docker build --tag oops-icons:${{ github.sha }} .
+
+    - name: List Docker images  # 列出当前可用的 Docker 镜像，用于调试
+      run: docker images
 
     - name: Tag the Docker image  # 第六步：给 Docker 镜像打标签
       run: |
-        docker tag oops-icons:${{ github.sha }} oops-icons:latest  # 打上 'latest' 标签
-        docker tag oops-icons:${{ github.sha }} ${DOCKER_USERNAME}/oops-icons:${{ github.sha }}  # 打上带用户名的完整路径标签
-        docker tag oops-icons:${{ github.sha }} ${DOCKER_USERNAME}/oops-icons:latest  # 再次打上带用户名的 'latest' 标签
+        echo "Tagging image oops-icons:${{ github.sha }} as oops-icons:latest"
+        docker tag oops-icons:${{ github.sha }} oops-icons:latest
+        echo "Tagging image oops-icons:${{ github.sha }} as ${DOCKER_USERNAME}/oops-icons:${{ github.sha }}"
+        docker tag oops-icons:${{ github.sha }} ${DOCKER_USERNAME}/oops-icons:${{ github.sha }}
+        echo "Tagging image oops-icons:${{ github.sha }} as ${DOCKER_USERNAME}/oops-icons:latest"
+        docker tag oops-icons:${{ github.sha }} ${DOCKER_USERNAME}/oops-icons:latest
 
     - name: Push the Docker image  # 第七步：推送 Docker 镜像到 Docker Hub
       run: |
-        docker push ${DOCKER_USERNAME}/oops-icons:${{ github.sha }}  # 推送带有唯一 SHA 的镜像到 Docker Hub
-        docker push ${DOCKER_USERNAME}/oops-icons:latest  # 推送 'latest' 标签的镜像到 Docker Hub
+        echo "Pushing image ${DOCKER_USERNAME}/oops-icons:${{ github.sha }}"
+        docker push ${DOCKER_USERNAME}/oops-icons:${{ github.sha }}
+        echo "Pushing image ${DOCKER_USERNAME}/oops-icons:latest"
+        docker push ${DOCKER_USERNAME}/oops-icons:latest
