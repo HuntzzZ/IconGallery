@@ -31,15 +31,15 @@ jobs:
 
     - name: Build the Docker image
       run: |
-        docker build --tag oops-icons-site:${{ github.sha }} .
+        docker build --tag oops-icons:${{ github.sha }} .
 
     - name: Tag the Docker image
       run: |
-        docker tag oops-icons-site:${{ github.sha }} oops-icons-site:latest
-        docker tag oops-icons-site:${{ github.sha }} ${DOCKER_USERNAME}/oops-icons-site:${{ github.sha }}
-        docker tag oops-icons-site:${{ github.sha }} ${DOCKER_USERNAME}/oops-icons-site:latest
+        docker tag oops-icons:${{ github.sha }} oops-icons:latest
+        docker tag oops-icons:${{ github.sha }} ${DOCKER_USERNAME}/oops-icons:${{ github.sha }}
+        docker tag oops-icons:${{ github.sha }} ${DOCKER_USERNAME}/oops-icons:latest
 
     - name: Push the Docker image
       run: |
-        docker push ${DOCKER_USERNAME}/oops-icons-site:${{ github.sha }}
-        docker push ${DOCKER_USERNAME}/oops-icons-site:latest
+        docker push ${DOCKER_USERNAME}/oops-icons:${{ github.sha }}
+        docker push ${DOCKER_USERNAME}/oops-icons:latest
