@@ -1,45 +1,50 @@
+# 定义工作流的名称
 name: Docker Image CI
 
+# 触发条件：当向 main 分支推送代码或创建拉取请求时触发此工作流
 on:
   push:
     branches:
-      - main  # 触发动作的分支，可以是其他分支或标签
+      - main  # 主分支推送会触发构建
   pull_request:
     branches:
-      - main
+      - main  # 向主分支发起的拉取请求也会触发构建
 
+# 定义 jobs（任务），jobs 是并行执行的独立单元
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    # 指定运行环境为 Ubuntu 22.04 LTS
+    runs-on: ubuntu-22.04  
 
+    # 步骤列表，按顺序执行
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
+    - name: Checkout repository  # 第一步：检出仓库代码
+      uses: actions/checkout@v3  # 使用官方提供的 checkout action 来获取代码库内容
 
-    - name: Log in to Docker Hub
-      uses: docker/login-action@v2
+    - name: Log in to Docker Hub  # 第二步：登录 Docker Hub
+      uses: docker/login-action@v2  # 使用官方提供的 login action 进行 Docker Hub 登录
       with:
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
+        username: ${{ secrets.DOCKER_USERNAME }}  # 从 GitHub Secrets 获取 Docker Hub 用户名
+        password: ${{ secrets.DOCKER_PASSWORD }}  # 从 GitHub Secrets 获取 Docker Hub 密码
 
-    - name: Set up QEMU
-      uses: docker/setup-qemu-action@v2
+    - name: Set up QEMU  # 第三步：设置 QEMU（用于多平台构建，可选）
+      uses: docker/setup-qemu-action@v2  # 使用官方提供的 setup-qemu action 设置 QEMU
 
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v2
+    - name: Set up Docker Buildx  # 第四步：设置 Docker Buildx（用于多平台构建，可选）
+      uses: docker/setup-buildx-action@v2  # 使用官方提供的 setup-buildx action 设置 Buildx
 
-    - name: Build the Docker image
+    - name: Build the Docker image  # 第五步：构建 Docker 镜像
       run: |
-        docker build --tag oops-icons:${{ github.sha }} .
+        docker build --tag oops-icons:${{ github.sha }} .  # 根据 Dockerfile 构建镜像，并打上唯一的 Git 提交 SHA 标签
 
-    - name: Tag the Docker image
+    - name: Tag the Docker image  # 第六步：给 Docker 镜像打标签
       run: |
-        docker tag oops-icons:${{ github.sha }} oops-icons:latest
-        docker tag oops-icons:${{ github.sha }} ${DOCKER_USERNAME}/oops-icons:${{ github.sha }}
-        docker tag oops-icons:${{ github.sha }} ${DOCKER_USERNAME}/oops-icons:latest
+        docker tag oops-icons:${{ github.sha }} oops-icons:latest  # 打上 'latest' 标签
+        docker tag oops-icons:${{ github.sha }} ${DOCKER_USERNAME}/oops-icons:${{ github.sha }}  # 打上带用户名的完整路径标签
+        docker tag oops-icons:${{ github.sha }} ${DOCKER_USERNAME}/oops-icons:latest  # 再次打上带用户名的 'latest' 标签
 
-    - name: Push the Docker image
+    - name: Push the Docker image  # 第七步：推送 Docker 镜像到 Docker Hub
       run: |
-        docker push ${DOCKER_USERNAME}/oops-icons:${{ github.sha }}
-        docker push ${DOCKER_USERNAME}/oops-icons:latest
+        docker push ${DOCKER_USERNAME}/oops-icons:${{ github.sha }}  # 推送带有唯一 SHA 的镜像到 Docker Hub
+        docker push ${DOCKER_USERNAME}/oops-icons:latest  # 推送 'latest' 标签的镜像到 Docker Hub
