@@ -16,10 +16,32 @@
 
 ## 截图
 
-![Screenshot 1](https://via.placeholder.com/800x400?text=Screenshot+1)
-![Screenshot 2](https://via.placeholder.com/800x400?text=Screenshot+2)
+![Screenshot 1](./20241211105308.png)
+![Screenshot 2](./20241211105336.png)
 
 ## 安装部署步骤
+目录结构如下：
+```
+iconweb/
+├── index.html
+├── styles.css
+├── script.js
+├── get_images.php
+├── favicon.ico
+└── images/
+    ├── border-radius/
+    │   ├── Chatgpt_A.png
+    │   ├── Chatgpt_B.png
+    │   └── ...
+    ├── circle/
+    │   ├── Actual_A.png
+    │   ├── Adguard_A.png
+    │   └── ...
+    └── svg/
+        ├── Apache_A.svg
+        ├── Apache_B.svg
+        └── ...
+```
 1.将本项目的index.html、styles.css、script.js、get_images.php文件上传到你的群晖 Web Station 的网站根目录。
 
 2.确保 文件直接位于网站根目录下。get_images.php
