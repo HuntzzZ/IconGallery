@@ -57,3 +57,8 @@ sudo chown -R http:http /volume1/web/path/
 5.访问网站：根据您在群晖的 Web Station 网页门户设置的访问方式访问即可。
 
 
+# IconGallery
+
+一个高清图标库网站，用于展示和管理各种高清仪表盘图标（1024x1024分辨率）。
+
+## 项目结构
