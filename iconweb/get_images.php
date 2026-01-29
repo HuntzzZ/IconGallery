@@ -1,5 +1,8 @@
 <?php
-$categories = ['border-radius', 'circle', 'svg'];
+header('Content-Type: application/json');
+header('Access-Control-Allow-Origin: *'); // 允许跨域访问
+
+$categories = ['border-radius', 'circle', 'svg', 'pt'];
 $result = [];
 
 foreach ($categories as $category) {
@@ -10,15 +13,18 @@ foreach ($categories as $category) {
 
     $files = array_diff(scandir($directory), array('.', '..'));
     $pngFiles = array_filter($files, function($file) use ($category) {
-        return pathinfo($file, PATHINFO_EXTENSION) === ($category === 'svg' ? 'svg' : 'png');
+        if ($category === 'svg') {
+            return strtolower(pathinfo($file, PATHINFO_EXTENSION)) === 'svg';
+        } else {
+            return in_array(strtolower(pathinfo($file, PATHINFO_EXTENSION)), ['png', 'ico']);
+        }
     });
 
     $result[$category] = array_values($pngFiles);
 }
 
-header('Content-Type: application/json');
+// 添加缓存头以提高性能
+header('Cache-Control: public, max-age=3600'); // 缓存1小时
+
 echo json_encode($result);
 ?>
-
-
-
