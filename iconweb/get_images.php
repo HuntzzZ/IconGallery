@@ -1,30 +1,32 @@
 <?php
 header('Content-Type: application/json');
-header('Access-Control-Allow-Origin: *'); // 允许跨域访问
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET');
+header('Access-Control-Allow-Headers: Content-Type');
 
-$categories = ['border-radius', 'circle', 'svg', 'pt'];
+// 定义图标目录
+$directories = [
+    'border-radius' => 'images/border-radius/',
+    'circle' => 'images/circle/',
+    'svg' => 'images/svg/',
+    'pt' => 'images/pt/'
+];
+
 $result = [];
 
-foreach ($categories as $category) {
-    $directory = "images/$category/";
-    if (!is_dir($directory)) {
-        continue;
+foreach ($directories as $category => $path) {
+    if (is_dir($path)) {
+        $files = scandir($path);
+        $image_files = array_filter($files, function($file) {
+            $extension = strtolower(pathinfo($file, PATHINFO_EXTENSION));
+            return in_array($extension, ['png', 'jpg', 'jpeg', 'gif', 'svg']);
+        });
+        
+        $result[$category] = array_values($image_files);
+    } else {
+        $result[$category] = [];
     }
-
-    $files = array_diff(scandir($directory), array('.', '..'));
-    $pngFiles = array_filter($files, function($file) use ($category) {
-        if ($category === 'svg') {
-            return strtolower(pathinfo($file, PATHINFO_EXTENSION)) === 'svg';
-        } else {
-            return in_array(strtolower(pathinfo($file, PATHINFO_EXTENSION)), ['png', 'ico']);
-        }
-    });
-
-    $result[$category] = array_values($pngFiles);
 }
 
-// 添加缓存头以提高性能
-header('Cache-Control: public, max-age=3600'); // 缓存1小时
-
-echo json_encode($result);
+echo json_encode($result, JSON_PRETTY_PRINT);
 ?>
