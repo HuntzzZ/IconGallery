@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  icon-gallery:
+    build: .
+    container_name: icon-gallery-web
+    ports:
+      - "8080:80"
+    volumes:
+      - ./images:/var/www/html/images  # 只映射图片目录
+    environment:
+      - APACHE_DOCUMENT_ROOT=/var/www/html
+    restart: unless-stopped
+    networks:
+      - icon-network
+
+networks:
+  icon-network:
+    driver: bridge
